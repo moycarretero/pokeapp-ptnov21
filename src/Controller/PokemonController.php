@@ -25,7 +25,7 @@ class PokemonController extends AbstractController {
     return $this->render('pokemons/showPokemon.html.twig', ['pokemon' => $pokemon]);
   }
 
-  #[Route('/pokemons')]
+  #[Route('/pokemons', name: 'listPokemons')]
 
   /**
    *
@@ -54,6 +54,12 @@ class PokemonController extends AbstractController {
       'pokemons/listPokemons.html.twig',
       ['pokemons' => $pokemons]
     );
+  }
+
+  #[Route("/react/pokemons")]
+  public function reactPokemons()
+  {
+      return $this->render("pokemons/reactPokemons.html.twig");
   }
 
 }

@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route("/upgrade")]
-class DefaultController
+
+class DefaultController extends AbstractController
 {
     public function saludo()
     {
@@ -17,11 +18,11 @@ class DefaultController
     #[Route("/user/{name}/{surname}/edad/{age}", methods: ["GET"])]
     public function user($name, $surname, $age)
     {
-        return new Response("Soy $name $surname y tengo $age años");
+        return $this->render("user.html.twig");
     }
 
     #[Route("/user", methods: ["GET", "POST"])]
-    public function getUser()
+    public function getUserr()
     {
         $user = [
             "nombre" => "Moises",
