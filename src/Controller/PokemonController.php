@@ -12,18 +12,17 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class PokemonController extends AbstractController {
 
-  #[Route('/pokemon')]
+  #[Route('/pokemon/{id}')]
 
     /**
      *
      */
-  public function showPokemon() {
-    $pokemon = [
-      'name' => 'Wooloo',
-      'description' => 'Su lana rizada es tan acolchada que no se hace daño ni aunque se caiga por un precipicio.',
-      'image' => 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/831.png',
-      'code' => '831',
-    ];
+  public function showPokemon($id, EntityManagerInterface $doctrine) {
+
+    $repository = $doctrine -> getRepository(Pokemon::class);
+
+    $pokemon = $repository -> find($id);
+    
     return $this->render('pokemons/showPokemon.html.twig', ['pokemon' => $pokemon]);
   }
 
@@ -32,25 +31,11 @@ class PokemonController extends AbstractController {
   /**
    *
    */
-  public function listPokemon() {
-    $pokemons = [
-      [
-        'name' => 'Wooloo1',
-        'description' => 'Su lana rizada es tan acolchada que no se hace daño ni aunque se caiga por un precipicio.',
-        'image' => 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/831.png',
-        'code' => '831',
-      ], [
-        'name' => 'Wooloo2',
-        'description' => 'Su lana rizada es tan acolchada que no se hace daño ni aunque se caiga por un precipicio.',
-        'image' => 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/832.png',
-        'code' => '831',
-      ], [
-        'name' => 'Wooloo3',
-        'description' => 'Su lana rizada es tan acolchada que no se hace daño ni aunque se caiga por un precipicio.',
-        'image' => 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/833.png',
-        'code' => '831',
-      ],
-    ];
+  public function listPokemon(EntityManagerInterface $doctrine) {
+    
+    $repository = $doctrine -> getRepository(Pokemon::class);
+
+    $pokemons = $repository -> findAll();
 
     return $this->render(
       'pokemons/listPokemons.html.twig',
