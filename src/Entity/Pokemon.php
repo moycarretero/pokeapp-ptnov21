@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 class Pokemon
@@ -20,6 +21,7 @@ class Pokemon
     private $decription;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Url]
     private $image;
 
     #[ORM\Column(type: 'integer', nullable: true)]
