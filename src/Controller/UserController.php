@@ -28,4 +28,25 @@ class UserController extends AbstractController {
     return $this->renderForm("users/insertUsers.html.twig", ["userForm"=>$form]);
   }
 
+    #[Route("/insert/admin/user", name: "insertAdminUser")]
+    public function formAdmin(Request $request, EntityManagerInterface $doctrine, UserPasswordHasherInterface $hasher)
+    {
+        $form = $this->createForm(UserType::class);
+        $form -> handleRequest($request);
+        if ($form-> isSubmitted() && $form-> isValid()) {
+            $user = $form->getData();
+            $user->setRoles(['ROLE_ADMIN']);
+            $password=$hasher->hashPassword($user,$user->getPassword());
+            $user->setPassword($password);
+            $doctrine->persist($user);
+            $doctrine->flush();
+
+            $this->addFlash(
+                "success", "user insertado correctamente"
+            );
+
+        }
+        return $this->renderForm("users/insertUsers.html.twig", ["userForm"=>$form]);
+    }
+
 }

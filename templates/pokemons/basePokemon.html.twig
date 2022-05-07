@@ -21,6 +21,12 @@
 					</div>
 				</div>
 			</nav>
+
+			{% if is_granted('ROLE_USER') %}
+				<p>Nombre: {{ app.user.name }}</p>
+			{% else %}
+				<a href="/login">Login</a>
+			{% endif %}
       {% block body %}{% endblock %}
 			{% block js %}{% endblock %}
 		</div>

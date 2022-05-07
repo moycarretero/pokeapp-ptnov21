@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Pokemon;
 use App\Form\PokemonType;
+use App\Manager\PokemonManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 class PokemonController extends AbstractController
 {
 
-  #[Route('/pokemon/{id}')]
+  #[Route('/pokemon/{id}', name: "showPokemon")]
+  #[IsGranted("ROLE_ADMIN")]
 
   /**
    *
@@ -80,12 +83,18 @@ class PokemonController extends AbstractController
 
 
   #[Route("/insert/pokemon", name: "insertPokemon")]
-  public function form(Request $request, EntityManagerInterface $doctrine)
+  public function form(Request $request, EntityManagerInterface $doctrine, PokemonManager $manager)
   {
     $form = $this->createForm(PokemonType::class);
     $form -> handleRequest($request);
     if ($form-> isSubmitted() && $form-> isValid()) {
       $pokemon = $form->getData();
+
+      $pokemonImage = $form->get('imageFile')->getData();
+
+      $fileName = $manager->upload($pokemonImage, $pokemon);
+
+      $pokemon->setImage("/images/$fileName");
 
       $doctrine->persist($pokemon);
       $doctrine->flush();
