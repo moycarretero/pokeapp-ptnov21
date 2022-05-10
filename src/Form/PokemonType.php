@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Debilidad;
 use App\Entity\Pokemon;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +19,12 @@ class PokemonType extends AbstractType
             ->add('decription')
             ->add('imageFile', FileType::class, ['mapped' => false])
             ->add('code')
+            ->add('debilidades', EntityType::class, [
+                'class'=>Debilidad::class,
+                'choice_label'=>'nombre',
+                'multiple' => true,
+                'expanded' => true,
+            ])
         ;
     }
 
